@@ -12,8 +12,9 @@ root_directory = '/pub/nrcan_rncan/elevation/geobase_cded_dnec/50k_dem/'
 #Get the list of DEM folders from the root directory
 directory_list = ftp.nlst(root_directory)
 
+folder_count = 0
 #For each folder
-for folder in directory_list[0:2]:
+for folder in directory_list:
 	
 	#Switch into the folder
 	ftp.cwd(folder)
@@ -25,6 +26,10 @@ for folder in directory_list[0:2]:
 	#For each file 
 	for elem in filenames:
 		
+		system('clear')
+		print 'folder: ' + folder + '\nprogress: ' + str(1.0*folder_count/len(directory_list))
+		print 'downloading: ' + elem
+		
 		#Check if it is a .zip file
 		if elem[-4:] == '.zip':
 			
@@ -32,4 +37,5 @@ for folder in directory_list[0:2]:
 				
 				ftp.retrbinary('RETR %s' % folder + '/' + elem, fileobj.write)
 		
-
+	folder_count+=1
+		
